@@ -81,6 +81,18 @@ app.get('/allTask/status', async (req, res) => {
     }
 });
 
+app.get('/myTask', async (req, res) => {
+    try {
+        const taskCollection = client.db("taskdata").collection('alltask');
+        const { email } = req.query
+        const myTask= await taskCollection.find({ email }).toArray();
+        res.send(myTask);
+    } catch (error) {
+        console.error('Error retrieving tasks:', error);
+        res.status(500).json({ error: 'An error occurred while fetching tasks.' });
+    }
+});
+
 
 async function run() {
     try {
