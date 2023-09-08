@@ -2,7 +2,8 @@ const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const app = express();
-const port = 8000;
+require('dotenv').config()
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
@@ -70,9 +71,9 @@ app.put('/allTask/complete/:id', async (req, res) => {
 
 app.get('/allTask/status', async (req, res) => {
     try {
-        const task=req.params.status
+        const task = req.params.status
         const taskCollection = client.db("taskdata").collection('alltask');
-        const query = {task:task};
+        const query = { task: task };
         const tasks = await taskCollection.find(query).toArray();
         res.json(tasks);
     } catch (error) {
@@ -85,7 +86,7 @@ app.get('/myTask', async (req, res) => {
     try {
         const taskCollection = client.db("taskdata").collection('alltask');
         const { email } = req.query
-        const myTask= await taskCollection.find({ email }).toArray();
+        const myTask = await taskCollection.find({ email }).toArray();
         res.send(myTask);
     } catch (error) {
         console.error('Error retrieving tasks:', error);
