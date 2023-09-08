@@ -8,6 +8,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
 
+
 const uri = "mongodb+srv://task:nOwdToqGl5MXtQJf@cluster0.oikwqb2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
     serverApi: {
@@ -27,7 +28,7 @@ app.get('/allTask', async (req, res) => {
         const taskCollection = client.db("taskdata").collection('alltask');
         const query = {};
         const tasks = await taskCollection.find(query).toArray();
-        res.json(tasks);
+        res.send(tasks);
     } catch (error) {
         console.error('Error retrieving tasks:', error);
         res.status(500).json({ error: 'An error occurred while fetching tasks.' });
@@ -38,7 +39,7 @@ app.post('/allTask', async (req, res) => {
     const taskCollection = client.db("taskdata").collection('alltask');
     const task = req.body;
     const result = await taskCollection.insertOne(task);
-    res.json({ success: true, result });
+    res.send({ success: true, result });
 
 
 });
@@ -75,7 +76,7 @@ app.get('/allTask/status', async (req, res) => {
         const taskCollection = client.db("taskdata").collection('alltask');
         const query = { task: task };
         const tasks = await taskCollection.find(query).toArray();
-        res.json(tasks);
+        res.send(tasks);
     } catch (error) {
         console.error('Error retrieving tasks:', error);
         res.status(500).json({ error: 'An error occurred while fetching tasks.' });
